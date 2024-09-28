@@ -25,7 +25,7 @@ npm install;
 ```
 
 ```bash
-npm run dev;
+npm run start:dev;
 ```
 
 # 3. What if you do not have all the necessary Dev dependencies on your mac OS to start this Node app?
@@ -68,35 +68,45 @@ bash ./install-postgresql/6_createdb-test.sh;
 
 ## i. Start by re-creating database
 ```bash
-bash ./database-recreation/0_create_database_smart-brain.sh;
+bash ./database-recreation/1_create_database_smart-brain.sh;
 ```
 
-## ii. Re-creating a table called 'users' in our database using Bash
+## ii. Re-creating a new user for our database using Bash
 ```bash
-bash ./database-recreation/1_create_table-users.sh;
+bash ./database-recreation/2_create_database_user.sh;
 ```
-## or you may run SQL statements declared in 2_create_table-users.sql
+## iii. Verify the newly created psql user for our database
 ```bash
-2_create_table-users.sql
-```
-
-## iii. Re-creating a table called 'login' in our database for storing bcrypt password hashes
-```bash
-bash ./database-recreation/4_create_table-login.sh;
-```
-## or you may run SQL statements declared in 3_create_table-login.sql
-```bash
-2_create_table-login.sql
+bash ./database-recreation/3_verify-created-user.sh;
 ```
 
-## iv. Verify that we've successfully created a table named 'users' in our database
+## iv. Create a table named 'users' in our database
 ```bash
-bash ./database-recreation/5_verify_schema-users.sh;
+bash ./database-recreation/4_create_table-users.sh;
 ```
 ## Hit 'q' key to exit when we're done verifying
 
-## v. Verify that we've successfully created a table named 'login' in our database
+## v. Create a table named 'login' in our database
 ```bash
-bash ./database-recreation/6_verify_schema-login.sh;
+bash ./database-recreation/5_create_table-login.sh;
 ```
-## Hit 'q' key to exit when we're done verifying
+
+## vi. Verify psql schema for 'users' table
+```bash
+bash ./database-recreation/6_verify_schema-users.sh;
+```
+
+## vii. Verify psql schema for 'login' table
+```bash
+bash ./database-recreation/7_verify_schema-login.sh;
+```
+
+## viii Connect to our psql database Shell Environment
+```bash
+bash ./database-recreation/8_enter-db-shell.sh;
+```
+
+## Enter 'exit' to quit Shell Environment
+```bash
+exit;
+```
