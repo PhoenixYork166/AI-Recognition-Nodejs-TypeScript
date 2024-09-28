@@ -8,7 +8,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const cors_1 = __importDefault(require("cors"));
 const knex_1 = __importDefault(require("knex"));
 const root_1 = require("./controllers/root");
-const register_1 = __importDefault(require("./controllers/register"));
+const register_1 = require("./controllers/register");
 const signin_1 = require("./controllers/signin");
 const profile_1 = __importDefault(require("./controllers/profile"));
 const image_1 = __importDefault(require("./controllers/image"));
@@ -70,7 +70,7 @@ app.get('/', (req, res) => { (0, root_1.handleRoot)(req, res, db); });
 // create /signin route
 app.post('/signin', (req, res) => { (0, signin_1.handleSignin)(req, res, db, bcryptjs_1.default); });
 // create /register route
-app.post('/register', (req, res) => { register_1.default.handleRegister(req, res, db, bcryptjs_1.default); });
+app.post('/register', (req, res) => { (0, register_1.handleRegister)(req, res, db, bcryptjs_1.default); });
 // create /profile/:id route
 // grab via req..params props
 app.get('/profile/:id', (req, res) => { profile_1.default.handleProfileGet(req, res, db); });

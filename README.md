@@ -1,6 +1,9 @@
 # AI-Recognition-API
+# Nodejs
+![Node.js](https://overclockers.ru/st/legacy/blog/362268/459359_O.jpg)
 
-![Node.js](https://qph.cf2.quoracdn.net/main-qimg-5450bd03a18170c9dec7e904ce7029e8)
+# TypeScript
+![TypeScript](https://miro.medium.com/v2/resize:fit:1200/1*tD5dWX37ZF2R_ye0CGcd5w.png)
 
 ## This Node.js app allows Register feature
 
