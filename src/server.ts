@@ -5,8 +5,8 @@ import knex from 'knex';
 import { handleRoot} from './controllers/root';
 import { handleRegister } from './controllers/register';
 import { handleSignin } from './controllers/signin';
-import profile from './controllers/profile';
-import image from './controllers/image';
+import { handleProfileGet } from './controllers/profile';
+import { handleCelebrityApi, handleColorApi, handleAgeApi, handleImage } from './controllers/image';
 import fetch from 'node-fetch';
 
 import dotenv from 'dotenv';
@@ -69,7 +69,7 @@ const app = express();
 // to parse json 
 app.use(express.json()); 
 
-// Using CORS modules
+// Using CORS modules to allow fetching from other domains
 app.use(cors());
 
 // create a basic route for root
@@ -83,14 +83,14 @@ app.post('/register', (req, res) => { handleRegister(req, res, db, bcrypt) } )
 
 // create /profile/:id route
 // grab via req..params props
-app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) } )
+app.get('/profile/:id', (req, res) => { handleProfileGet(req, res, db) } )
 
 // create /image
 // increase entries
-app.put('/image', (req, res) => { image.handleImage(req, res, db) } )
-app.post('/celebrityimage', (req, res) => { image.handleCelebrityApi(req, res, fetch) } )
-app.post('/colorimage', (req, res) => { image.handleColorApi(req, res, fetch) } )
-app.post('/ageimage', (req, res) => { image.handleAgeApi(req, res, fetch) } )
+app.put('/image', (req, res) => { handleImage(req, res, db) } )
+app.post('/celebrityimage', (req, res) => { handleCelebrityApi(req, res, fetch) } )
+app.post('/colorimage', (req, res) => { handleColorApi(req, res, fetch) } )
+app.post('/ageimage', (req, res) => { handleAgeApi(req, res, fetch) } )
 
 // app.listen(port, fn)
 // fn will run right after listening to a port

@@ -1,4 +1,6 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.handleProfileGet = void 0;
 const handleProfileGet = (req, res, db) => {
     const { id } = req.params;
     db.select('*').from('users').where({
@@ -14,7 +16,5 @@ const handleProfileGet = (req, res, db) => {
     })
         .catch(err => res.status(400).json(`error getting user:\n${err}`));
 };
-module.exports = {
-    handleProfileGet: handleProfileGet
-};
+exports.handleProfileGet = handleProfileGet;
 //# sourceMappingURL=profile.js.map

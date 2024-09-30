@@ -1,46 +1,12 @@
 import dotenv from 'dotenv';
 dotenv.config();
+import { returnClarifaiRequestOptions } from '../util/returnClarifaiRequestionOptions';
 
 console.log(`\nprocess.env.PAT:\n${process.env.PAT}\n\nprocess.env.USER_ID:\n${process.env.USER_ID}\n\nprocess.env.APP_ID:\n${process.env.APP_ID}\n`);
 
-// PUT to update entries
-/* Declaring a custom callback to accept passed-in param 'imageUrl' */
-const returnClarifaiRequestOptions = (imageUrl) => {
-    const PAT = process.env.PAT;
-    const USER_ID = process.env.USER_ID;
-    const APP_ID = process.env.APP_ID;
-    const IMAGE_URL = imageUrl;
-  
-    const raw = JSON.stringify({
-      user_app_id: {
-        user_id: USER_ID,
-        app_id: APP_ID
-      },
-      inputs: [
-        {
-          data: {
-            image: {
-              url: IMAGE_URL
-            }
-          }
-        }
-      ]
-    });
-  
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        Authorization: 'Key ' + PAT
-      },
-      body: raw
-    };
-    return requestOptions;
-};
-
 //   console.log(returnClarifaiRequestOptions("https://upload.wikimedia.org/wikipedia/commons/4/4d/Beautiful_landscape.JPG"));
 
-const handleCelebrityApi = (req, res, fetch) => {
+export const handleCelebrityApi = (req, res, fetch) => {
     const input = req.body.input;
     console.log(`req.body.input:\n${input}\ntypeof req.body.input:\n${typeof input}`);
 
@@ -71,7 +37,7 @@ const handleCelebrityApi = (req, res, fetch) => {
       });
 };
 
-const handleColorApi = (req, res, fetch) => {
+export const handleColorApi = (req, res, fetch) => {
     const input = req.body.input;
     console.log(`\nreq.body.input:\n${input}\ntypeof input:\n${typeof input}\n`);
     const API_BASE_URL = 'https://api.clarifai.com/v2/models/' +
@@ -100,7 +66,7 @@ const handleColorApi = (req, res, fetch) => {
       });
 };
 
-const handleAgeApi = (req, res, fetch) => {
+export const handleAgeApi = (req, res, fetch) => {
     const input = req.body.input;
     console.log(`req.body.input:\n${input}\ntypeof req.body.input:\n${typeof input}`);
     const API_BASE_URL = 'https://api.clarifai.com/v2/models/' +
@@ -131,7 +97,7 @@ const handleAgeApi = (req, res, fetch) => {
 };
   
 
-const handleImage = (req, res, db) => {
+export const handleImage = (req, res, db) => {
 const { id } = req.body;
 // To store entries increase to DB
 db('users')
@@ -144,12 +110,5 @@ db('users')
     res.status(200).json(entries[0].entries);
 })
 .catch(err => res.status(400).json(`unable to get entries\n${err}`))
-};
-
-module.exports = {
-    handleImage: handleImage,
-    handleCelebrityApi: handleCelebrityApi,
-    handleColorApi: handleColorApi,
-    handleAgeApi: handleAgeApi
 };
 

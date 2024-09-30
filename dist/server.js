@@ -10,8 +10,8 @@ const knex_1 = __importDefault(require("knex"));
 const root_1 = require("./controllers/root");
 const register_1 = require("./controllers/register");
 const signin_1 = require("./controllers/signin");
-const profile_1 = __importDefault(require("./controllers/profile"));
-const image_1 = __importDefault(require("./controllers/image"));
+const profile_1 = require("./controllers/profile");
+const image_1 = require("./controllers/image");
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
@@ -63,7 +63,7 @@ const app = (0, express_1.default)();
 // Will need either app.use(express.json()) || app.use(bodyParser.json())
 // to parse json 
 app.use(express_1.default.json());
-// Using CORS modules
+// Using CORS modules to allow fetching from other domains
 app.use((0, cors_1.default)());
 // create a basic route for root
 app.get('/', (req, res) => { (0, root_1.handleRoot)(req, res, db); });
@@ -73,13 +73,13 @@ app.post('/signin', (req, res) => { (0, signin_1.handleSignin)(req, res, db, bcr
 app.post('/register', (req, res) => { (0, register_1.handleRegister)(req, res, db, bcryptjs_1.default); });
 // create /profile/:id route
 // grab via req..params props
-app.get('/profile/:id', (req, res) => { profile_1.default.handleProfileGet(req, res, db); });
+app.get('/profile/:id', (req, res) => { (0, profile_1.handleProfileGet)(req, res, db); });
 // create /image
 // increase entries
-app.put('/image', (req, res) => { image_1.default.handleImage(req, res, db); });
-app.post('/celebrityimage', (req, res) => { image_1.default.handleCelebrityApi(req, res, node_fetch_1.default); });
-app.post('/colorimage', (req, res) => { image_1.default.handleColorApi(req, res, node_fetch_1.default); });
-app.post('/ageimage', (req, res) => { image_1.default.handleAgeApi(req, res, node_fetch_1.default); });
+app.put('/image', (req, res) => { (0, image_1.handleImage)(req, res, db); });
+app.post('/celebrityimage', (req, res) => { (0, image_1.handleCelebrityApi)(req, res, node_fetch_1.default); });
+app.post('/colorimage', (req, res) => { (0, image_1.handleColorApi)(req, res, node_fetch_1.default); });
+app.post('/ageimage', (req, res) => { (0, image_1.handleAgeApi)(req, res, node_fetch_1.default); });
 // app.listen(port, fn)
 // fn will run right after listening to a port
 const port = process.env.PORT || 3000;

@@ -1,12 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleSignin = void 0;
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const bcryptjs_1 = require("bcryptjs");
 console.log(`rootDir/controllers/signin.ts:`);
-console.log(bcryptjs_1.default);
 // create /signin route
 const handleSignin = (req, res, db, bcrypt) => {
     const requestHandlerName = `handleSignIn`;
@@ -37,27 +33,51 @@ const handleSignin = (req, res, db, bcrypt) => {
         // to server-side fetched json
         const user = response[0];
         // const isValid: boolean = bcrypt.compareSync(password, user.hash, (err, result) => {
-        bcrypt.compare(password, user.hash, (err, result) => {
+        /* bcrypt-ts */
+        (0, bcryptjs_1.compare)(password, user.hash)
+            .then((result) => {
+            if (!result) {
+                console.log(`\nError comparing users' entered password vs db hashes via\nbcrypt.compare(${password}, ${user.hash})\n`);
+                return res.status(400).json({ error: `Incorrect credentials. Error comparing users' entered password vs db hashes via bcrypt.compare(${password}, ${user.hash}` });
+            }
+            db.select('*')
+                .from('users')
+                .where('email', '=', email)
+                .then((user) => {
+                if (user) {
+                    return res.status(200).json(user[0]);
+                }
+                else {
+                    return res.status(404).json({ error: 'user not found' });
+                }
+            });
+        })
+            .catch((err) => {
+            console.log(`\nError comparing users' entered password vs db hashes:\n${err}\n`);
+            throw new Error(`\nError comparing users' entered password vs db hashes:\n`);
+        });
+    })
+        /* bcrypt async
+        bcrypt.compare(password, user.hash, (err: Error, result: any) => {
             if (err) {
-                return res.status(500).json({ error: 'Password Encryption failed' });
+                return res.status(500).json({ error: 'Password Hash comparison failed'});
             }
             if (result) {
                 db.select('*')
-                    .from('users')
-                    .where('email', '=', email)
-                    .then(user => {
+                .from('users')
+                .where('email', '=', email)
+                .then(user => {
                     if (user) {
                         return res.status(200).json(user[0]);
-                    }
-                    else {
+                    } else {
                         return res.status(404).json({ error: 'user not found' });
                     }
-                });
-            }
-            else {
-                res.status(400).json({ error: 'Invalid crendentials' });
+                })
+            } else {
+                res.status(400).json({ error: 'Invalid crendentials'});
             }
         });
+        */
         /* bcrypt.compareSync()
         // If they match up
         if (isValid) {
@@ -81,10 +101,9 @@ const handleSignin = (req, res, db, bcrypt) => {
             res.status(400).json({ error: 'login failed, incorrect credentials' });
         }
         */
-    })
         .catch((err) => {
         console.log(`\nError loging in: ${err}\n`);
-        res.status(400).json({ error: 'login failed' });
+        res.status(400).json({ error: 'Login failed' });
     });
 };
 exports.handleSignin = handleSignin;
